@@ -1,0 +1,18 @@
+{
+  "name": "ytb_api_manager",
+  "version": "1.0.0",
+  "description": "First This project help you to surpass the limited number of result that youtube can send per request, then the second pbjective of this project is to manage the data retrived from the api to to make it easy to deal with",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "youtubeapi",
+    "comments"
+  ],
+  "author": "Helbram (ismail oukha)",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.0"
+  }
+}
