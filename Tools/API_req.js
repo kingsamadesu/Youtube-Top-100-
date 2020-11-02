@@ -22,7 +22,7 @@ async function get_videos_page(channelId, pageToken=''){
         }
         for (e in Api_items){
             let i = Api_items[e];
-            items.push({'videoId': i['snippet']["resourceId"]['videoId'], "publishedAt": i['snippet']["publishedAt"]})
+            items.push({'videoId': i['snippet']["resourceId"]['videoId'], "publishedAt": i['snippet']["publishedAt"]});
             elementsNbr += 1
         }
         return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,
@@ -32,6 +32,45 @@ async function get_videos_page(channelId, pageToken=''){
         console.log("er");
         return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,
         'items': items}
+    }
+   
+}
+
+function RemoveAttr(obj) {
+    delete obj.videoId;
+    delete obj.textOriginal;
+    delete obj.authorChannelUrl;
+    delete obj.canRate;
+    delete obj.viewerRating
+    delete obj.updatedAt
+    return obj
+}
+//,authorDisplayName,authorProfileImageUrl,authorChannelId,likeCount,a.publishedAt
+
+async function get_comments_page(videoId, pageToken=''){
+    try{
+        let items = [];
+        let nextPageToken="";
+        let elementsNbr=0;
+        let url = API_URLs.get_Url_commentThreads(videoId, pageToken);
+        let req = await axios.get(url);
+        let data = req.data;
+        let Api_items = data["items"];delete data.items;
+        if ('nextPageToken' in data){
+            nextPageToken = data["nextPageToken"];
+        }
+        for (e in Api_items){
+            let i = Api_items[e];
+            elementsNbr += 1;
+            items.push({"info":i["snippet"]["topLevelComment"]["snippet"],"repliesNbr":i["snippet"]["totalReplyCount"],"replies":('replies' in i)?i["replies"]["comments"]:[]});
+        }
+        console.log({'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items})
+        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items}  // we can define it as a class named videos_page
+
+    }
+    catch (e){
+        console.log("er");
+        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items}
     }
    
 }
