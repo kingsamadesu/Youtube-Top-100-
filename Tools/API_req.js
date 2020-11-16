@@ -16,22 +16,20 @@ async function get_videos_page(channelId, pageToken=''){
         let url = API_URLs.get_Url_PlaylistItems(playlistId, pageToken);
         let req = await axios.get(url);
         let data = req.data;
-        let Api_items = data["items"];delete data.items;
+        let Api_items = data["items"];
         if ('nextPageToken' in data){
-            nextPageToken = req["nextPageToken"];
+            nextPageToken = data["nextPageToken"];
         }
         for (e in Api_items){
             let i = Api_items[e];
             items.push({'videoId': i['snippet']["resourceId"]['videoId'], "publishedAt": i['snippet']["publishedAt"]});
             elementsNbr += 1
         }
-        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,
-        'items': items}  // we can define it as a class named videos_page
+        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items}  // we can define it as a class named videos_page
     }
     catch (e){
         console.log("er");
-        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,
-        'items': items}
+        return {status:"error"};
     }
    
 }
@@ -55,23 +53,27 @@ async function get_comments_page(videoId, pageToken=''){
         let url = API_URLs.get_Url_commentThreads(videoId, pageToken);
         let req = await axios.get(url);
         let data = req.data;
-        let Api_items = data["items"];delete data.items;
+        let Api_items = data["items"];
+
         if ('nextPageToken' in data){
             nextPageToken = data["nextPageToken"];
-        }
+        }   
         for (e in Api_items){
             let i = Api_items[e];
             elementsNbr += 1;
-            items.push({"info":i["snippet"]["topLevelComment"]["snippet"],"repliesNbr":i["snippet"]["totalReplyCount"],"replies":('replies' in i)?i["replies"]["comments"]:[]});
+            let info = i["snippet"]["topLevelComment"]["snippet"];
+            info["repliesNbr"] = i["snippet"]["totalReplyCount"];
+            items.push({"commentId":i["snippet"]["topLevelComment"]["etag"],"info":info,});
+            //items.push({"commentId":i['id'],"info":info,"replies":('replies' in i)?i["replies"]["comments"]:[]});
         }
-        console.log({'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items})
         return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items}  // we can define it as a class named videos_page
 
     }
     catch (e){
         console.log("er");
-        return {'elementsNbr': elementsNbr, 'nextPageToken': nextPageToken,'items': items}
+        return {status:"error"}
     }
    
 }
 
+module.exports = {get_videos_page,get_comments_page,get_upload_playlist}
