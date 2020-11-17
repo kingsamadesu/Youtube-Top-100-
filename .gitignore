@@ -1,2 +1,4 @@
 node_modules/
 Tools/Write_To_fireStore.js
+serviceAccountKey.json
+serviceAccountKey2.json
