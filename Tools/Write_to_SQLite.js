@@ -1,13 +1,41 @@
 const API_req = require("./API_req");
+const File = require("fs");
 const sqlite3 = require('sqlite3').verbose();
 const path = require("path");
-const DataBaseFilePath=path.resolve("Res")+"/data.db";
+const DBfilename = "data.db";//File name change it if you want.
+const DataBaseFilePath=path.resolve("Res")+"/"+DBfilename;//path
 
-// Create a file db
-let db = new sqlite3.Database(DataBaseFilePath,sqlite3.OPEN_READWRITE,(err)=>{
+let file = File.existsSync(DataBaseFilePath);
+
+// if the db file dosn't exesite than it will be Created
+let db = new sqlite3.Database(DataBaseFilePath,(err)=>{
     if (err) throw err;
     console.log(DataBaseFilePath + " is found,Connection is Done.")
 });
+if (file){
+    db.run(`CREATE TABLE "Comments" (
+            "commentId"	TEXT NOT NULL UNIQUE,
+            "videoId"	TEXT,
+            "textDisplay"	TEXT,
+            "authorDisplayName"	TEXT,
+            "authorProfileImageUrl"	TEXT,
+            "authorChannelUrl"	TEXT,
+            "likeCount"	INTEGER,
+            "publishedAt"	INTEGER,
+            "repliesNbr"	INTEGER,
+            PRIMARY KEY("commentId")
+        );
+        CREATE TABLE "Channels" (
+            "channelId"	TEXT NOT NULL UNIQUE,
+            PRIMARY KEY("channelId")
+        );
+        CREATE TABLE "Videos" (
+            "videoId"	TEXT NOT NULL UNIQUE,
+            "publishedAt"	NUMERIC,
+            "channelId"	TEXT,
+            PRIMARY KEY("videoId")
+        );`)
+    }
 
 /**
  * this function transform a comment object to SQL Quiery 
@@ -76,6 +104,7 @@ async function SACTSF1V(videoId){
     while(data.nextPageToken !== "")
     console.log(videoId + " Comments:" + (j)*100);
 }
+
 
 
 /**
