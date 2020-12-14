@@ -1,5 +1,5 @@
-const WriteToSQLite = require("./Write_to_SQLite");
-const TOP_100_commenters = require("./TOP_100_commenters");
+const WriteToSQLite = require(".Tools/Write_to_SQLite");
+const TOP_100_commenters = require(".Tools/TOP_100_commenters");
 
 const testchannelId = "UCm-qmxF0q6JUGXuyW-SXivQ";//Ultra Beats channel
 const testVideoId  = "UdeydZ7qNwo";
