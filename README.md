@@ -1,6 +1,6 @@
 # Youtube Top 100
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)]
 
 
 Youtube Top 100 commenter is javascripts program that is designed for determane the top 100 commenter -for a youtube channel or a specific video- deppending on three factors comments number, total replies for specific commenter and total likes. 
@@ -16,12 +16,6 @@ this mini-project handle:
 
   - ability to specify the number of simultaneous request that the program should establish with the YOUTUBE API.
   - the API respnse is optimized using 'flied' attribute.
-
-
-You can also:
-  - Import and save files from GitHub, Dropbox, Google Drive and One Drive
-
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
 
 ### Tech
 
